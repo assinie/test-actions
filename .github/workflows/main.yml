@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: cc65/cc65
-          path: ../cc65
+          path: cc65
 
       - name: Checkout orix-sdk
         uses: actions/checkout@v2
@@ -45,15 +45,15 @@ jobs:
           echo $GITHUB_WORKSPACE
 
       - name: Compilation CC65
-        run: make -C ../cc65 all
+        run: make -C cc65 all
 
       - name: Compilation orix-sdk
         run: make -C orix-sdk all
 
       - name: Vérification
         run: |
-          ls -l ../cc65/bin
+          ls -l cc65/bin
           echo $PATH
-          PATH=$PATH:../cc65/bin
+          PATH=$PATH:${GITHUB_WORKSPACE}/cc65/bin
           cc65 -V
           ls -lR orix-sdk
