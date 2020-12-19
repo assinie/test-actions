@@ -62,6 +62,8 @@ jobs:
           git config --local core.sparseCheckout true
           echo "src/include" >> .git/info/sparse-checkout
           git checkout
+          cd ${GITHUB_WORKSPACE}
+          ls -lR orix
 
       - name: Compilation orix-sdk
         run: make -C orix/orix-sdk
