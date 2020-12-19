@@ -44,7 +44,9 @@ jobs:
           echo $GITHUB_WORKSPACE
 
       - name: Compilation CC65
-        run: make -C cc65 all
+        run: make -C cc65 all && make install
 
       - name: Vérification
-        run: ls -l cc65/bin
+        run: |
+          ls -l cc65/bin
+          cc65 -V
