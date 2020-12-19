@@ -41,3 +41,10 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           ls
+          echo $GITHUB_WORKSPACE
+
+      - name: Compilation CC65
+        run: make -C cc65 all
+
+      - name: Vérification
+        run: ls -l cc65/bin
