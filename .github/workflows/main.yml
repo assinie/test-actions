@@ -51,14 +51,14 @@ jobs:
       - name: Préparation environnement
         working-directory: orix
         run: |
-          git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/shell
-          cd shell
+          git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/shell orix-softxare/shell
+          cd orix-software/shell
           git config --local core.sparseCheckout true
           echo "src/include" >> .git/info/sparse-checkout
           git checkout
-          cd ..
-          git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/kernel
-          cd kernel
+          cd ../..
+          git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/kernel orix-software/kernel
+          cd orix-software/kernel
           git config --local core.sparseCheckout true
           echo "src/include" >> .git/info/sparse-checkout
           git checkout
