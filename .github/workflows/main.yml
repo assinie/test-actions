@@ -76,8 +76,8 @@ jobs:
         run: ls -lR build
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
         working-directory: build
+        uses: actions/upload-artifact@v2
         with:
           path: bin/
 
