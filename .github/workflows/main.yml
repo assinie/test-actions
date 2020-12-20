@@ -71,7 +71,7 @@ jobs:
           ls -l ../
 
       - name: Compilation du projet
-        run: make
+        run: CC65_HOME=${GITHUB_WORKSPACE}/../cc65 make
 
       - name: Vérification (2)
         run: ls -lR build
