@@ -72,7 +72,9 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          path: build/bin
+          path: |
+            build/**/*
+            !build/obj/*
 
       - name: Post compilation
         run: mv ../cc65 . && mv ../orix-software . && mv ../orix-sdk .

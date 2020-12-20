@@ -2,7 +2,7 @@
 # Spécifique au Projet
 #
 
-PROJECT = hello
+PROJECT ?= hello
 BUILDPATH = ../build
 OBJPATH = $(BUILDPATH)/obj
 BINPATH = $(BUILDPATH)/bin
@@ -52,17 +52,18 @@ endif
 
 .PHONY: clean mrproper
 
-all: $(BUILDPATH) $(BINPATH)/$(PROJECT)
+all: $(BUILDPATH) $(OBJPATH) $(BINPATH) $(BINPATH)/$(PROJECT)
 
-configure: $(BUILDPATH)
+configure: $(OBJPATH) $(BINPATH)
 
 clean:
 	cd $(OBJPATH) && rm -f *.o *.lst
 
 
 mrproper: clean
-	# cd $(BINPATH) && rm -f $(PROJECT) *.sym *.map
-	rm -rf $(BUILDPATH)
+	@#cd $(BINPATH) && rm -f $(PROJECT) *.sym *.map
+	rm -rf $(BINPATH)
+	rm -rf $(OBJPATH)
 
 
 #
@@ -76,21 +77,27 @@ OBJS= $(addprefix $(OBJPATH)/, $(patsubst %.s,%.o, $(SRC)))
 
 #%.o: %.s
 $(OBJPATH)/%.o: %.s
-	$(AS) $(ASFLAGS) -o $@ $<
+	@echo "Assemble $<"
+	@$(AS) $(ASFLAGS) -o $@ $<
 
 
 $(BINPATH)/$(PROJECT): $(OBJS) $(LIBPATH)/$(LIBS)
 	@echo "Create $(PROJECT)"
-	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
+	@$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 ifeq ($(DEBUG),yes)
-	sed -re 's/al 00(.{4}) \.(.+)$$/\1 \2/' $(BINPATH)/$(PROJECT).ca.sym | sort > $(BINPATH)/$(PROJECT).sym
+	@echo "Create $(PROJECT).sym"
+	@sed -re 's/al 00(.{4}) \.(.+)$$/\1 \2/' $(BINPATH)/$(PROJECT).ca.sym | sort > $(BINPATH)/$(PROJECT).sym
 endif
+
+$(OBJPATH):
+	@echo "Create $(OBJPATH) directory"
+	@mkdir -p $(OBJPATH)
+
+$(BINPATH):
+	@echo "Create $(BINPATH) directory"
+	@mkdir -p $(BINPATH)
 
 $(BUILDPATH):
 	@echo "Create $(BUILDPATH) directory"
 	@mkdir -p $(BUILDPATH)
-	@echo "Create $(BINPATH) directory"
-	@mkdir -p $(BINPATH)
-	@echo "Create $(OBJPATH) directory"
-	@mkdir -p $(OBJPATH)
 

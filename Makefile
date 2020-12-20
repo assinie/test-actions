@@ -1,32 +1,28 @@
+export PROJECT := hello
 
-all: project
+all: project docs
 
 
-.PHONY: configure tests docs clean mrproper
+.PHONY: configure docs clean mrproper
 
 configure:
 	@$(MAKE) -C src $@
-	@$(MAKE) -C doc $@
-	@$(MAKE) -C tests $@
+	@$(MAKE) -C docs $@
 
 project:
+	@echo -e "\nMake project $(PROJECT)\n"
 	@$(MAKE) -C src
 
 docs:
-	@$(MAKE) -C doc
-
-tests:
-	@$(MAKE) -C src $@
-	@$(MAKE) -C tests $@
+	@echo -e "\nMake project $(PROJECT) man page\n"
+	@$(MAKE) -C docs
 
 clean:
 	@$(MAKE) -C src $@
-	@$(MAKE) -C doc $@
-	@$(MAKE) -C tests $@
+	@$(MAKE) -C docs $@
 
 
-mrproper: clean
+mrproper:
 	@$(MAKE) -C src $@
-	@$(MAKE) -C tests $@
 	@$(MAKE) -C docs $@
 
