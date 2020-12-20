@@ -67,6 +67,8 @@ jobs:
           PATH=$PATH:${GITHUB_WORKSPACE}/cc65/bin
           cc65 -V
           ls -lR orix-sdk
+          mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../
+          ls -l ../
 
       - name: Compilation du projet
         run: make
