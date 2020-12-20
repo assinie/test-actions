@@ -61,9 +61,8 @@ jobs:
       - name: Vérification (1)
         run: |
           ls -lR orix-sdk
-          ls -l ../
-          ls -l ../cc65/bin
-          PATH=$PATH:${GITHUB_WORKSPACE}/../cc65/bin
+          ls -l cc65/bin
+          PATH=$PATH:${GITHUB_WORKSPACE}/cc65/bin
           echo $PATH
           cc65 -V
 
