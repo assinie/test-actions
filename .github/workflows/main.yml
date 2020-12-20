@@ -37,6 +37,13 @@ jobs:
           repository: assinie/orix-sdk
           path: orix-sdk
 
+      - name: Compilation CC65
+        run: make -C cc65 >/dev/null
+
+      - name: Compilation orix-sdk
+        working-directory: orix-sdk
+        run: mkdir -p build/{lib,bin} && make lib
+
       - name: Préparation environnement
         run: |
           git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/shell orix-software/shell
@@ -51,24 +58,16 @@ jobs:
           echo "src/include" >> .git/info/sparse-checkout
           git checkout
           cd ${GITHUB_WORKSPACE}
-          ls -lR
-
-      - name: Compilation CC65
-        run: make -C cc65 all
-
-      - name: Compilation orix-sdk
-        working-directory: orix-sdk
-        run: mkdir -p build/{lib,bin} && make lib
+          mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../
 
       - name: Vérification (1)
         run: |
-          ls -l cc65/bin
-          echo $PATH
-          PATH=$PATH:${GITHUB_WORKSPACE}/cc65/bin
-          cc65 -V
           ls -lR orix-sdk
-          mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../
           ls -l ../
+          ls -l ../cc65/bin
+          PATH=$PATH:${GITHUB_WORKSPACE}/../cc65/bin
+          echo $PATH
+          cc65 -V
 
       - name: Compilation du projet
         run: CC65_HOME=${GITHUB_WORKSPACE}/../cc65 make
