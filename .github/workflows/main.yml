@@ -1,28 +1,23 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Make
+name: build
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push event but only for the main branch
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  #pull_request:
+  #  branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-18.04
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - name: Checkout cc65
@@ -40,7 +35,7 @@ jobs:
       - name: Compilation CC65
         run: make -C cc65 >/dev/null
 
-      - name: Préparation environnement pour orix-sdk
+      - name: Prepare environment for orix-sdk
         run: |
           git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/shell orix-software/shell
           cd orix-software/shell
@@ -54,25 +49,24 @@ jobs:
           echo "src/include" >> .git/info/sparse-checkout
           git checkout
 
-      - name: Compilation orix-sdk
+      - name: Compile orix-sdk
         working-directory: orix-sdk
         run: mkdir -p build/{lib,bin} && CC65_HOME=${GITHUB_WORKSPACE}/cc65 make lib
 
-      - name: Vérification (1)
+      - name: Display tools
         run: |
+          PATH=$PATH:${GITHUB_WORKSPACE}/cc65/bin
+          cc65 -V
           ls -lR orix-sdk
           ls -l cc65/bin
-          PATH=$PATH:${GITHUB_WORKSPACE}/cc65/bin
-          echo $PATH
-          cc65 -V
 
-      - name: Préparation environnement pour le projet
+      - name: Prepare environment for project
         run: mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../
 
-      - name: Compilation du projet
+      - name: Compile project
         run: CC65_HOME=${GITHUB_WORKSPACE}/../cc65 make
 
-      - name: Vérification (2)
+      - name: List build directory content
         run: ls -lR build
 
       - name: Upload Artifact
