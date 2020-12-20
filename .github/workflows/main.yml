@@ -40,11 +40,7 @@ jobs:
       - name: Compilation CC65
         run: make -C cc65 >/dev/null
 
-      - name: Compilation orix-sdk
-        working-directory: orix-sdk
-        run: mkdir -p build/{lib,bin} && make lib
-
-      - name: Préparation environnement
+      - name: Préparation environnement pour orix-sdk
         run: |
           git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/shell orix-software/shell
           cd orix-software/shell
@@ -57,8 +53,10 @@ jobs:
           git config --local core.sparseCheckout true
           echo "src/include" >> .git/info/sparse-checkout
           git checkout
-          cd ${GITHUB_WORKSPACE}
-          mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../
+
+      - name: Compilation orix-sdk
+        working-directory: orix-sdk
+        run: mkdir -p build/{lib,bin} && CC65_HOME=${GITHUB_WORKSPACE}/cc65 make lib
 
       - name: Vérification (1)
         run: |
@@ -68,6 +66,9 @@ jobs:
           PATH=$PATH:${GITHUB_WORKSPACE}/../cc65/bin
           echo $PATH
           cc65 -V
+
+      - name: Préparation environnement pour le projet
+        run: mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../
 
       - name: Compilation du projet
         run: CC65_HOME=${GITHUB_WORKSPACE}/../cc65 make
