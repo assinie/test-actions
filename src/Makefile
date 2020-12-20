@@ -6,7 +6,6 @@ PROJECT = hello
 BUILDPATH = ../build
 OBJPATH = $(BUILDPATH)/obj
 BINPATH = $(BUILDPATH)/bin
-LIBPATH = $(BUILDPATH)/lib
 CC65PATH = ../../cc65/bin
 # LD65_CFG = ../cfg/orix.cfg
 
@@ -14,6 +13,7 @@ KERNEL_PATH = ../../orix-software/
 SHELL_PATH = ../../orix-software/
 SDK_PATH = ../../orix-sdk/
 
+LIBPATH = $(SDK_PATH)/build/lib
 LIBS = orix-sdk.lib
 
 VERSION ?= "0.01"
@@ -91,10 +91,6 @@ $(BUILDPATH):
 	@mkdir -p $(BUILDPATH)
 	@echo "Create $(BINPATH) directory"
 	@mkdir -p $(BINPATH)
-	@echo "Create $(LIBPATH) directory"
-	@mkdir -p $(LIBPATH)
 	@echo "Create $(OBJPATH) directory"
 	@mkdir -p $(OBJPATH)
 
-$(LIBPATH)/$(LIBS): $(LIBPATH)
-	cp ../../orix-sdk/build/lib/*.lib $(LIBPATH)/
