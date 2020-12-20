@@ -74,3 +74,6 @@ jobs:
 
       - name: Vérification (2)
         run: ls -lR build
+
+      - name: Post compilation
+        run: mv ../cc65 . && mv ../orix-software . && mv ../orix-sdk .
