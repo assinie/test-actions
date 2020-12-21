@@ -3,10 +3,10 @@
 #
 
 PROJECT ?= hello
-BUILDPATH = ../build
+BUILD_PATH = ../build
 
-MANPATH = $(BUILDPATH)/usr/share/man
-MD2HLPPATH = ../../md2hlp/src/
+MAN_PATH = $(BUILD_PATH)/usr/share/man
+MD2HLP_PATH = ../../md2hlp/src/
 
 VERBOSE ?= 0
 
@@ -18,7 +18,7 @@ VERBOSE ?= 0
 # Définition des outils
 #
 
-MD2HLP = $(MD2HLPPATH)/md2hlp.py
+MD2HLP = $(MD2HLP_PATH)/md2hlp.py
 
 #
 # Définition des options pour les outils
@@ -39,17 +39,17 @@ endif
 
 .PHONY: clean mrproper
 
-all: $(MANPATH) $(MANPATH)/$(PROJECT).hlp
+all: $(MAN_PATH) $(MAN_PATH)/$(PROJECT).hlp
 
-configure: $(MANDPATH)
+configure: $(MAN_PATH)
 
 clean:
-	cd $(MANPATH) && rm -f *.hlp
+	cd $(MAN_PATH) && rm -f *.hlp
 
 
 mrproper: clean
-	@# cd $(MANPATH) && rm -f $(PROJECT).hlp
-	rm -rf $(MANPATH)
+	@# cd $(MAN_PATH) && rm -f $(PROJECT).hlp
+	rm -rf $(MAN_PATH)
 
 
 #
@@ -58,20 +58,20 @@ mrproper: clean
 
 
 SRC = $(PROJECT).md
-OBJS= $(addprefix $(MANPATH)/, $(patsubst %.md,%.hlp, $(SRC)))
+OBJS= $(addprefix $(MAN_PATH)/, $(patsubst %.md,%.hlp, $(SRC)))
 
 
 #%.hlp: %.md
-$(MANPATH)/%.hlp: %.md
+$(MAN_PATH)/%.hlp: %.md
 	@echo "Create $(PROJECT).hlp"
 	@python $(MD2HLP) $(MD2HLPFLAGS) -o $@ -f $<
 
 
-$(MANPATH)/$(PROJECT).hlp: $(PROJECT).md
+$(MAN_PATH)/$(PROJECT).hlp: $(PROJECT).md
 
-$(MANPATH):
-	@echo "Create $(BUILDPATH) directory"
-	@mkdir -p $(BUILDPATH)
-	@echo "Create $(MANPATH) directory"
-	@mkdir -p $(MANPATH)
+$(MAN_PATH):
+	@echo "Create $(BUILD_PATH) directory"
+	@mkdir -p $(BUILD_PATH)
+	@echo "Create $(MAN_PATH) directory"
+	@mkdir -p $(MAN_PATH)
 
