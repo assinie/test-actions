@@ -29,32 +29,32 @@ jobs:
           key: ${{ runner.os }}-orix-sdk
 
       - name: Checkout cc65
-        if: steps.cache-sdk.outouts.cache-hit != 'true'
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: cc65/cc65
           path: cc65
 
       - name: Checkout orix-sdk
-        if: steps.cache-sdk.outouts.cache-hit != 'true'
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: assinie/orix-sdk
           path: orix-sdk
 
       - name: Checkout md2hlp
-        if: steps.cache-sdk.outouts.cache-hit != 'true'
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: assinie/md2hlp
           path: md2hlp
 
       - name: Compilation CC65
-        if: steps.cache-sdk.outouts.cache-hit != 'true'
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         run: make -C cc65 >/dev/null
 
       - name: Prepare environment for orix-sdk
-        if: steps.cache-sdk.outouts.cache-hit != 'true'
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         run: |
           git clone --no-checkout --depth 1 --single-branch --branch master https://github.com/orix-software/shell orix-software/shell
           cd orix-software/shell
@@ -69,7 +69,7 @@ jobs:
           git checkout
 
       - name: Compile orix-sdk
-        if: steps.cache-sdk.outouts.cache-hit != 'true'
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
         working-directory: orix-sdk
         run: mkdir -p build/{lib,bin} && CC65_HOME=${GITHUB_WORKSPACE}/cc65 make lib
 
