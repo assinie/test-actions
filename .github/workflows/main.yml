@@ -153,7 +153,7 @@ jobs:
 
       - name: Make archive
         working-directory: ${{steps.download.outputs.download-path}}
-        run: tar -zcvf $GITHUB_WORKSPACE/$ARCHIVE_NAME .
+        run: tar -zcvf $GITHUB_WORKSPACE/$ARCHIVE_NAME *
 
       - name: Upload to oric
         run: |
