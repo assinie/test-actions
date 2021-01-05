@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Cache sdk
         id: cache-sdk
-        use: actions/cache@v2
+        uses: actions/cache@v2
         with:
           path: |
              cc65/**/*
@@ -89,7 +89,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install sdk
-        use: actions/cache@v2
+        uses: actions/cache@v2
         with:
           path: |
              cc65/**/*
@@ -159,5 +159,4 @@ jobs:
         run: |
            if [ "$BRANCH_NAME" = "master" -o "$BRANCH_NAME" = "main" ]; then VERSION=`cat VERSION`; else VERSION=alpha ; fi
            echo curl -X POST --data-binary "@$ARCHIVE_NAME" "https://xxx.xxx.xxx/$VERSION/tgz/6502/$ARCHIVE_NAME"
-
 
