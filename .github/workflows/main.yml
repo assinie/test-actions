@@ -1,6 +1,6 @@
 name: build
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push event but only for the main branch
   push:
@@ -84,3 +84,43 @@ jobs:
 
       - name: Post compilation
         run: mv ../cc65 . && mv ../orix-software . && mv ../orix-sdk . && mv ../md2hlp .
+
+  upload:
+    needs: build
+    runs-on: ubuntu-18.04
+    defaults:
+      run:
+        shell: bash
+    #env:
+    #  hash: ${{ secrets.HASH }}
+
+    steps:
+      - name: Get branch name
+       if: github.event_name != 'pull_request'
+       run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+       # run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF##*/})"
+
+      - name: Get branch name on pull request
+       if: github.event_name == 'pull_request'
+       run: echo "BRANCH_NAME=${GITHUB_HEAD_REF}" >> GITHUB_ENV
+       #run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+
+      - name: Get archive name
+        run: echo "ARCHIVE_NAME=${GITHUB_REPOSITORY##*/}.tgz" >> $GITHUB_ENV
+
+      - name: Download Artifact
+         id: download
+        uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: artifact
+
+      - name: Make archive
+        working-directory: ${{steps.download.outputs.download-path}}
+        run: tar -zcvf $GITHUB_WORKSPACE/$ARCHIVE_NAME .
+
+      - name: Upload to oric
+        run: |
+           if [ "$BRANCH_NAME" = "master" -o "$BRANCH_NAME" = "main" ]; then VERSION=`cat VERSION`; else VERSION=alpha ; fi
+           echo curl -X POST --data-binary "@$ARCHIVE_NAME" "https://xxx.xxx.xxx/$VERSION/tgz/6502/$ARCHIVE_NAME"
+
