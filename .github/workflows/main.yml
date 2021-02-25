@@ -87,8 +87,6 @@ jobs:
     outputs:
       version: ${{ steps.job_vars.outputs.VERSION }}
       repo_name: ${{ steps.job_vars.outputs.REPO_NAME }}
-    env:
-      CC65_HOME: $GITHUB_WORKSPACE/../cc65
 
     steps:
       - uses: actions/checkout@v2
@@ -98,7 +96,8 @@ jobs:
         run: |
           echo "::set-output name=VERSION::$(cat VERSION)"
           echo "::set-output name=REPO_NAME::${GITHUB_REPOSITORY##*/}"
-          echo "${CC65_HOME}/bin" >> $GITHUB_PATH
+          echo "${GITHUB_WORKSPACE}/../cc65/bin" >> $GITHUB_PATH
+          echo "CC65_HOME=${GITHUB_WORKSPACE}/../cc65" >> $GITHUB_ENV
 
       - name: Install sdk
         uses: actions/cache@v2
