@@ -87,6 +87,8 @@ jobs:
     outputs:
       version: ${{ steps.job_vars.outputs.VERSION }}
       repo_name: ${{ steps.job_vars.outputs.REPO_NAME }}
+    env:
+      CC65_HOME: ${{ GITHUB_WORKSPACE }}/../cc65
 
     steps:
       - uses: actions/checkout@v2
@@ -96,6 +98,7 @@ jobs:
         run: |
           echo "::set-output name=VERSION::$(cat VERSION)"
           echo "::set-output name=REPO_NAME::${GITHUB_REPOSITORY##*/}"
+          echo "${CC65_HOME]/bin" >> $GITHUB_PATH
 
       - name: Install sdk
         uses: actions/cache@v2
@@ -111,7 +114,7 @@ jobs:
         run: mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../ && mv md2hlp ../
 
       - name: Compile project
-        run: CC65_HOME=${GITHUB_WORKSPACE}/../cc65 make
+        run: make
 
       - name: List build directory content
         run: ls -lR build
