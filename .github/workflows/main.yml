@@ -111,7 +111,10 @@ jobs:
           key: ${{ runner.os }}-orix-sdk
 
       - name: Prepare environment for project
-        run: mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../ && mv md2hlp ../
+        run: |
+          mv cc65 ../ && mv orix-software ../ && mv orix-sdk ../ && mv md2hlp ../
+          ls -lR ../orix-software
+          echo $CC65_HOME
 
       - name: Compile project
         run: make
