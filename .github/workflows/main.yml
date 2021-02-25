@@ -98,7 +98,7 @@ jobs:
         run: |
           echo "::set-output name=VERSION::$(cat VERSION)"
           echo "::set-output name=REPO_NAME::${GITHUB_REPOSITORY##*/}"
-          echo "${CC65_HOME]/bin" >> $GITHUB_PATH
+          echo "${CC65_HOME}/bin" >> $GITHUB_PATH
 
       - name: Install sdk
         uses: actions/cache@v2
