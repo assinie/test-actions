@@ -90,6 +90,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Set job variables
         id: job_vars
